@@ -15,27 +15,24 @@ using namespace std;
 class InsertZ {
     public:
     string canTransform(string init, string goal) {
-        //587
         string newstr;
         int j=0,count=0;
-        //int lengthinit=init.size();
-        int lengthgoal=goal.size();
         for(int i=0;i<goal.size();++i){
             if(goal[i]!='z'){
                 newstr[j++]=goal[i];
             }
         }
-        //if(init.size()==newstr.size()){
-            for(int i=0;i<init.size();++i){
-                if(init[i]==newstr[i]){
+        for(int i=0;i<init.size();++i){
+            if(init[i]==newstr[i]){
                     ++count;
-                }
             }
-        //}
-        if((count)==init.size()){
-            return "Yes";
         }
-            return "No";
+        if(count==init.size()){
+            return"Yes";
+        }
+        else{
+             return"No";
+        }
     }
 };
 
