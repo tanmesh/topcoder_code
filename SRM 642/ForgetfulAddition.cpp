@@ -16,30 +16,25 @@ class ForgetfulAddition {
     public:
     int minNumber(string expression) {
         int n=expression.size();
-        int i,j,digi=0,numb=0;
-        int arr[n],sum[n];
-        
-
-        for(i=0;i<(n-1);++i){
-            digi=(digi*10)+(expression[i]-'0');
-            
-            for(j=i+1;j<n;++j){
-            numb = (numb*10)+(expression[j]-'0');
-            
-           }
-           sum[i]=numb+digi;
-           numb=0;
-           
+        int numb=0;
+        for(int i=0;i<n;++i){
+            numb = numb*10+(expression[i]-'0');
         }
-
-
-        int mini=sum[0];
-        for(i=1;i<(n-1);++i){
-            if(mini>sum[i]){
-                mini=sum[i];
+        int sum[n-1];
+        int m=numb;
+        for(int i=0;i<(n-1);++i){
+            // int last=last+(m%(10));
+            // m=m/10;
+            int remain=(pow(10,i+1));
+            sum[i]=(m/(pow(10,i+1)))+(m%remain);
+        }
+        int min=sum[0];
+        for(int i=1;i<(n-1);++i){
+            if(min>sum[i]){
+                min=sum[i];
             }
         }
-        return mini;
+        return min;
     }
 };
 
