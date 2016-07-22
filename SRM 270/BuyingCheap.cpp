@@ -15,31 +15,29 @@ using namespace std;
 class BuyingCheap {
     public:
     int thirdBestPrice(vector<int> prices) {
-        int i,j;
-        int count=1;
-        for(i=prices.size();i>0;--i){
-             int index=0;
-            for(j=1;j<i;j++){
-                if(prices[index]<prices[j]){
-                    index=j;
-                }    
+        int n=0;
+        for(int i=0;i<prices.size();++i){
+            for(int j=i+1;j<prices.size();++j){
+                if(prices[i]==prices[j]){
+                    continue;
+                }
+                if(prices[i]>prices[j]){
+                    int tmp=prices[i];
+                    prices[i]=prices[j];
+                    prices[j]=tmp;
+                }
             }
-                int temp=prices[index];
-                prices[index]=prices[i-1];
-                prices[i-1]=temp;
-
+            if(prices[i-1]==prices[i]){
+                continue;
+            }
+            prices[n++]=prices[i];
+            if(n==3){
+                return prices[i];
+            }
         }
-        for(i=1;i<prices.size();i++){
-            if(prices[i-1]!=prices[i])
-                ++count;
-            if(count==3){
-               return prices[i]; 
-            }    
+        if(n<4){
+            return -1;
         }
-               
-                    return -1;
-                
-        
     }
 };
 
