@@ -12,13 +12,19 @@
 
 using namespace std;
 
+bool f(int n, int p,int w){
+    int value = ((n-1)*p + 99)/100;
+    return value<=w;
+}
+
+
 class BalancedGame {
     public:
     int result(vector<string> conflicts, int p, int q) {
-        int cnt=0;
         for(int i=0;i<conflicts.size();++i){
             float win=0,loss=0;
-            for(int j=0;j<conflicts[i].size();++j){
+            int n= conflicts[i].size();
+            for(int j=0;j<n;++j){
                 if(conflicts[i][j]=='W'){
                     ++win;
                 }
@@ -26,19 +32,14 @@ class BalancedGame {
                     ++loss;
                 }
             }
-            if((((win/conflicts[i].size())*100)<p) || (((loss/conflicts[i].size())*100)<q)){
+            if(!(f(n,p,win) && f(n,q,loss))){
                 return i;
             }
-            else{
-                ++cnt;
-            }
         }
-        if(cnt==conflicts.size()){
-            return -1;
-        }
-        return 0;
+        return -1;
     }
 };
+
 
 // CUT begin
 ifstream data("BalancedGame.sample");
