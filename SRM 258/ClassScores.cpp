@@ -24,20 +24,20 @@ class ClassScores {
                         ++count;
                     }
                 }
-            cout<<"initial "<<freq<<"   "<<count<<endl;
+            //cout<<"initial "<<freq<<"   "<<count<<endl;
             if(freq<count){
                 freq=count;
                 v.clear();
-                cout<<"pushing here\n";
+              //  cout<<"pushing here\n";
                 v.push_back(scores[i]);
             }
             else
             if(freq==count){
                 v.push_back(scores[i]);
-                cout<<"pushing here\n";
+                //cout<<"pushing here\n";
             }
-            cout<<"after "<<freq<<"   "<<count<<endl;    
-            cout<<endl;
+            //cout<<"after "<<freq<<"   "<<count<<endl;    
+            //cout<<endl;
         }
         sort(v.begin(),v.end());
         return v;
