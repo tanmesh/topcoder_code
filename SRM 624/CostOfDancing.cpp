@@ -15,20 +15,12 @@ using namespace std;
 class CostOfDancing {
     public:
     int minimum(int K, vector<int> danceCost) {
-    for(int i=danceCost.size();i>0;--i){
-        for(int j=0;j+1<i;++j){
-            if(danceCost[j]>danceCost[j+1]){
-                int tmp=danceCost[j];
-                danceCost[j]=danceCost[j+1];
-                danceCost[j+1]=tmp;
-            }
+        sort(danceCost.begin(),danceCost.end());           
+        int sum=0;
+        for(int i=0;i<K;++i){
+            sum+=danceCost[i];
         }
-    }            
-    int sum=0;
-    for(int i=0;i<K;++i){
-        sum+=danceCost[i];
-    }
-    return sum;
+        return sum;
     }
 };
 
@@ -141,3 +133,4 @@ int main(int argc, char *argv[]) {
     return run_test(mainProcess, cases, argv[0]);
 }
 // CUT end
+    
