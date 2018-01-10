@@ -12,12 +12,12 @@
 
 using namespace std;
 
-int dp[100];
+int dp[100][100];
 
 class RGBStreet {
     public:
 
-    int cvt_strto_int(string s) {
+    int ConvertStringToInt(string s) {
         int numb = 0;
         int n =  s.length();
         for(int i=0; i<n; ++i) {
@@ -26,7 +26,7 @@ class RGBStreet {
         return numb;
     }
 
-    vector<vector<int> > extractPrices(vector<string> houses) {
+    vector<vector<int> > ExtractPrices(vector<string> houses) {
         vector<vector<int> > prices(houses.size());
         for(int i=0 ;i<houses.size(); ++i) {
             int start = 0;
@@ -34,12 +34,12 @@ class RGBStreet {
             for(int j=0; j<houses[i].length(); ++j) {
                 if(houses[i][j] == ' ') {
                     string str1 = houses[i].substr(start, j-start);
-                    tmp.push_back(cvt_strto_int(str1));
+                    tmp.push_back(ConvertStringToInt(str1));
                     start = j+1;  
                 }
                 else if(j+1 == houses[i].length()) {
                     string str1 = houses[i].substr(start);
-                    tmp.push_back(cvt_strto_int(str1));
+                    tmp.push_back(ConvertStringToInt(str1));
                 }
             }
             prices[i] = tmp;
@@ -48,7 +48,7 @@ class RGBStreet {
     }
 
     int f(int i, int& last, char colour, vector<string>& houses, vector< vector< int> >& prices) {
-        int &res = dp[i];
+        int &res = dp[i][colour];
         if(res == -1) {
             if(i == last) {
                 res = 0;
@@ -72,17 +72,13 @@ class RGBStreet {
         int last = houses.size();
 
         int cost = INT_MAX;
-        vector<vector<int> > prices = extractPrices(houses);
+        vector<vector<int> > prices = ExtractPrices(houses);
 
         memset(dp, -1, sizeof(dp));
         cost = min(cost, f(0, last, 'r', houses, prices));
         cost = min(cost, f(0, last, 'g', houses, prices));
         cost = min(cost, f(0, last, 'b', houses, prices));
 
-        for(int i=0; i<100; ++i) {
-            cout << dp[i] << " ";
-        }
-        cout << endl;
         return 0;
     }
 };
