@@ -12,21 +12,20 @@
 
 using namespace std;
 
-int dp[100][100];
+int dp[100][4];
 
 class RGBStreet {
     public:
 
-    int ConvertStringToInt(string s) {
+    int convertStringToInt(string s) {
         int numb = 0;
-        int n =  s.length();
-        for(int i=0; i<n; ++i) {
+        for(int i=0; i<s.length(); ++i) {
             numb = numb*10 + (s[i]-'0');
         }
         return numb;
     }
 
-    vector<vector<int> > ExtractPrices(vector<string> houses) {
+    vector<vector<int> > extractPrices(vector<string> houses) {
         vector<vector<int> > prices(houses.size());
         for(int i=0 ;i<houses.size(); ++i) {
             int start = 0;
@@ -34,12 +33,12 @@ class RGBStreet {
             for(int j=0; j<houses[i].length(); ++j) {
                 if(houses[i][j] == ' ') {
                     string str1 = houses[i].substr(start, j-start);
-                    tmp.push_back(ConvertStringToInt(str1));
+                    tmp.push_back(convertStringToInt(str1));
                     start = j+1;  
                 }
                 else if(j+1 == houses[i].length()) {
                     string str1 = houses[i].substr(start);
-                    tmp.push_back(ConvertStringToInt(str1));
+                    tmp.push_back(convertStringToInt(str1));
                 }
             }
             prices[i] = tmp;
@@ -47,21 +46,22 @@ class RGBStreet {
         return prices;
     }
 
-    int f(int i, int& last, char colour, vector<string>& houses, vector< vector< int> >& prices) {
+    int f(int i, int colour, vector<string>& houses, vector< vector< int> >& prices) {
+        int last = houses.size();
         int &res = dp[i][colour];
         if(res == -1) {
             if(i == last) {
                 res = 0;
             }
             else{
-                if(colour == 'r') {
-                    res = prices[i][0] + min(f(i+1, last, 'g', houses, prices), f(i+1, last, 'b', houses, prices));
+                if(colour == 1) {
+                    res = prices[i][0] + min(f(i+1, 2, houses, prices), f(i+1, 3, houses, prices));
                 }
-                else if(colour == 'g') {
-                    res = prices[i][1] + min(f(i+1, last, 'r', houses, prices), f(i+1, last, 'b', houses, prices));
+                else if(colour == 2) {
+                    res = prices[i][1] + min(f(i+1, 1, houses, prices), f(i+1, 3, houses, prices));
                 }
-                else if(colour == 'b') {
-                    res = prices[i][2] + min(f(i+1, last, 'g', houses, prices), f(i+1, last, 'r', houses, prices));
+                else if(colour == 3) {
+                    res = prices[i][2] + min(f(i+1, 2, houses, prices), f(i+1, 1, houses, prices));
                 }
             }
         }
@@ -71,14 +71,19 @@ class RGBStreet {
     int estimateCost(vector<string> houses) {
         int last = houses.size();
 
-        int cost = INT_MAX;
-        vector<vector<int> > prices = ExtractPrices(houses);
+        vector<vector<int> > prices = extractPrices(houses);
 
         memset(dp, -1, sizeof(dp));
-        cost = min(cost, f(0, last, 'r', houses, prices));
-        cost = min(cost, f(0, last, 'g', houses, prices));
-        cost = min(cost, f(0, last, 'b', houses, prices));
+        int cost = f(0, 1, houses, prices);
+        cost = min(cost, f(0, 2, houses, prices));
+        cost = min(cost, f(0, 3, houses, prices));
 
+        for(int i=0; i<100; ++i) {
+            for(int j=0; j<4; ++j) {
+                if(dp[i][j] != -1)
+                cout << i << " " << j << " " << dp[i][j] << endl;
+            }
+        }
         return 0;
     }
 };
