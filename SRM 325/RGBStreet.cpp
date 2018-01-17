@@ -54,8 +54,18 @@ class RGBStreet {
             }
             else{
                 if(previousHousePaint == -1) {
-                    res = min(prices[i][0], prices[i][1]);
-                    res = min(prices[i][2], res);
+                    if(prices[i][0] < prices[i][1] && prices[i][0] < prices[i][2]) {
+                        res = prices[i][0];
+                        previousHousePaint = 0;
+                    }
+                    else if(prices[i][1] < prices[i][0] && prices[i][1] < prices[i][2]) {
+                        res = prices[i][1];
+                        previousHousePaint = 1;
+                    }
+                    else if(prices[i][2] < prices[i][1] && prices[i][2] < prices[i][0]) {
+                        res = prices[i][2];
+                        previousHousePaint = 2;
+                    }
                 }
                 else{
                     if(previousHousePaint != 0) {
