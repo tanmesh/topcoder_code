@@ -46,22 +46,27 @@ class RGBStreet {
         return prices;
     }
 
-    int f(int i, int colour, vector<string>& houses, vector< vector< int> >& prices) {
-        int last = houses.size();
-        int &res = dp[i][colour];
+    int f(int i, int previousHousePaint, vector<string>& houses, vector< vector< int> >& prices) {
+        int &res = dp[i][previousHousePaint];
         if(res == -1) {
-            if(i == last) {
+            if(i >= houses.size()) {
                 res = 0;
             }
             else{
-                if(colour == 1) {
-                    res = prices[i][0] + min(f(i+1, 2, houses, prices), f(i+1, 3, houses, prices));
+                if(previousHousePaint == -1) {
+                    res = min(prices[i][0], prices[i][1]);
+                    res = min(prices[i][2], res);
                 }
-                else if(colour == 2) {
-                    res = prices[i][1] + min(f(i+1, 1, houses, prices), f(i+1, 3, houses, prices));
-                }
-                else if(colour == 3) {
-                    res = prices[i][2] + min(f(i+1, 2, houses, prices), f(i+1, 1, houses, prices));
+                else{
+                    if(previousHousePaint != 0) {
+                        res = prices[i][0] + min(f(i+1, 0, houses, prices), res);
+                    }
+                    else if(previousHousePaint != 1) {
+                        res = prices[i][1] + min(f(i+1, 1, houses, prices), res);
+                    }
+                    else if(previousHousePaint != 2) {
+                        res = prices[i][2] + min(f(i+1, 2, houses, prices), res);
+                    }
                 }
             }
         }
@@ -69,21 +74,18 @@ class RGBStreet {
     }
 
     int estimateCost(vector<string> houses) {
-        int last = houses.size();
-
         vector<vector<int> > prices = extractPrices(houses);
 
         memset(dp, -1, sizeof(dp));
-        int cost = f(0, 1, houses, prices);
-        cost = min(cost, f(0, 2, houses, prices));
-        cost = min(cost, f(0, 3, houses, prices));
 
-        for(int i=0; i<100; ++i) {
-            for(int j=0; j<4; ++j) {
-                if(dp[i][j] != -1)
-                cout << i << " " << j << " " << dp[i][j] << endl;
-            }
-        }
+        int cost = f(0, -1, houses, prices);
+
+        // for(int i=0; i<100; ++i) {
+        //     for(int j=0; j<4; ++j) {
+        //         if(dp[i][j] != -1)
+        //         cout << i << " " << j << " " << dp[i][j] << endl;
+        //     }
+        // }
         return 0;
     }
 };
