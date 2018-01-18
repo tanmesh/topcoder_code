@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int dp[100][4];
+int dp[9][4];
 
 class RGBStreet {
     public:
@@ -43,60 +43,31 @@ class RGBStreet {
             }
             prices[i] = tmp;
         }
+
         return prices;
     }
 
-    int f(int i, int previousHousePaint, vector<string>& houses, vector< vector< int> >& prices) {
-        int &res = dp[i][previousHousePaint];
-        if(res == -1) {
-            if(i >= houses.size()) {
-                res = 0;
-            }
-            else{
-                if(previousHousePaint == -1) {
-                    if(prices[i][0] < prices[i][1] && prices[i][0] < prices[i][2]) {
-                        res = prices[i][0];
-                        previousHousePaint = 0;
-                    }
-                    else if(prices[i][1] < prices[i][0] && prices[i][1] < prices[i][2]) {
-                        res = prices[i][1];
-                        previousHousePaint = 1;
-                    }
-                    else if(prices[i][2] < prices[i][1] && prices[i][2] < prices[i][0]) {
-                        res = prices[i][2];
-                        previousHousePaint = 2;
-                    }
-                }
-                else{
-                    if(previousHousePaint != 0) {
-                        res = prices[i][0] + min(f(i+1, 0, houses, prices), res);
-                    }
-                    else if(previousHousePaint != 1) {
-                        res = prices[i][1] + min(f(i+1, 1, houses, prices), res);
-                    }
-                    else if(previousHousePaint != 2) {
-                        res = prices[i][2] + min(f(i+1, 2, houses, prices), res);
-                    }
-                }
-            }
+    int minPrice(int i, int previousColour, int housesCnt, vector< vector< int> >& prices) {
+        if(i >= housesCnt) {
+            return 0;
         }
-        return res;
+        int ans = INT_MAX;
+        if(previousColour != 0) {
+            ans = prices[i][0] + min(minPrice(i+1, 0, housesCnt, prices), ans);
+        }
+        if(previousColour != 1) {
+            ans = prices[i][1] + min(minPrice(i+1, 1, housesCnt, prices), ans);
+        }
+        if(previousColour != 2) {
+            ans = prices[i][2] + min(minPrice(i+1, 2, housesCnt, prices), ans);
+        }
+        return ans;
     }
 
     int estimateCost(vector<string> houses) {
         vector<vector<int> > prices = extractPrices(houses);
 
-        memset(dp, -1, sizeof(dp));
-
-        int cost = f(0, -1, houses, prices);
-
-        // for(int i=0; i<100; ++i) {
-        //     for(int j=0; j<4; ++j) {
-        //         if(dp[i][j] != -1)
-        //         cout << i << " " << j << " " << dp[i][j] << endl;
-        //     }
-        // }
-        return 0;
+        return minPrice(0, -1, houses.size(), prices);
     }
 };
 
