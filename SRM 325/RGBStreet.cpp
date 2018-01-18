@@ -9,10 +9,11 @@
 #include <sstream>
 #include <typeinfo>
 #include <fstream>
+#include <limits.h>
 
 using namespace std;
 
-int dp[9][4];
+int dp[100][5];
 
 class RGBStreet {
     public:
@@ -48,26 +49,36 @@ class RGBStreet {
     }
 
     int minPrice(int i, int previousColour, int housesCnt, vector< vector< int> >& prices) {
-        if(i >= housesCnt) {
-            return 0;
+        int &res = dp[i][previousColour];
+        if(res == -1) {
+            if(i >= housesCnt) {
+                res = 0;
+            }
+            else{
+                res = INT_MAX;
+                if(previousColour != 0) {
+                    res = min(prices[i][0] + minPrice(i+1, 0, housesCnt, prices), res);
+                }
+                if(previousColour != 1) {
+                    res = min(prices[i][1] + minPrice(i+1, 1, housesCnt, prices), res);
+                }
+                if(previousColour != 2) {
+                    res = min(prices[i][2] + minPrice(i+1, 2, housesCnt, prices), res);
+                }
+            }
         }
-        int ans = INT_MAX;
-        if(previousColour != 0) {
-            ans = prices[i][0] + min(minPrice(i+1, 0, housesCnt, prices), ans);
-        }
-        if(previousColour != 1) {
-            ans = prices[i][1] + min(minPrice(i+1, 1, housesCnt, prices), ans);
-        }
-        if(previousColour != 2) {
-            ans = prices[i][2] + min(minPrice(i+1, 2, housesCnt, prices), ans);
-        }
-        return ans;
+        return res;
     }
 
     int estimateCost(vector<string> houses) {
         vector<vector<int> > prices = extractPrices(houses);
 
-        return minPrice(0, -1, houses.size(), prices);
+        memset(dp, -1, sizeof(dp));
+
+        int cost = prices[0][0] + minPrice(1, 0, houses.size(), prices);
+        cost = min(cost, prices[0][1] + minPrice(1, 1, houses.size(), prices));
+        cost = min(cost, prices[0][2] + minPrice(1, 2, houses.size(), prices));
+        return cost;
     }
 };
 
