@@ -15,16 +15,15 @@ using namespace std;
 class FibonacciDiv2 {
     public:
     int find(int N) {
-        int cnt=0;
-        int f0=0,f1=1,f2=f0+f1;
-        while(f2 <= N){
-            f0=f1;
-            f1=f2;
-            f2=f0+f1;\
+        int f0=0, f1=1;
+        int res = 2000000;
+        while(f0 <= 2000000){
+            res = min(res, abs(f0-N));
+            int f2=f0+f1;
+            f0 = f1;
+            f1 = f2;
         }
-        int f3=f2;
-        cnt=min(N-f1,f3-N);
-        return cnt;
+        return res;
     }
 };
 
