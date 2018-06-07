@@ -15,18 +15,21 @@ using namespace std;
 class ShorterSuperSum {
     public:
     int calculate(int k, int n) {
-        int sum=0,j=k-1;
-        if(k==0){
-            sum  = n;
-            return sum;
+        int dp[k+1][n+1];
+        for(int i=0; i<=k; ++i) {
+            dp[i][0] = 0;
         }
-        else{
-            for(int i=1;i<=n;++i){
-                sum +=calculate(j,i);
+        for(int i=1; i<=n; ++i) {
+            dp[0][i] = i;
+        }
+
+        for(int i=1; i<=k; ++i) {
+            for(int j=1; j<=n; ++j) {
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
             }
         }
-        printf("%d\n",sum);
-        return sum;
+        cout << dp[k][n] << endl;
+        return dp[k][n];
     }
 };
 
