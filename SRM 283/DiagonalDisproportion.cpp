@@ -26,7 +26,7 @@ class DiagonalDisproportion {
             }
         }
     }
-        return mai-coll;
+    return mai-coll;
     }
 };
 
