@@ -12,29 +12,19 @@
 
 using namespace std;
 
-class KiwiJuiceEasy {
+class RowAndCoins {
     public:
-    vector<int> thePouring(vector<int> capacities, vector<int> bottles, vector<int> fromId, vector<int> toId) {
-        for(int i=0;i<fromId.size();++i){
-            int sum=bottles[fromId[i]]+bottles[toId[i]];
-
-            if(sum>capacities[toId[i]]){
-                bottles[toId[i]]=capacities[toId[i]];
-                bottles[fromId[i]]=sum-capacities[toId[i]];
-            }
-
-            if(sum<=capacities[toId[i]]){
-                bottles[toId[i]]=sum;
-                bottles[fromId[i]]=0;   
-            }
-            
+    string getWinner(string cells) {
+        int n = (int)cells.length();
+        if(cells[0] == 'A' || cells[n-1] == 'A') {
+            return  "Alice";
         }
-        return bottles;
+        return "Bob";
     }
 };
 
 // CUT begin
-ifstream data("/Users/tanmesh/dev/topcoder_code/Member SRM 478/KiwiJuiceEasy.sample");
+ifstream data("/Users/tanmesh/dev/topcoder_code/SRM 522/RowAndCoins.sample");
 
 string next_line() {
     string s;
@@ -51,17 +41,6 @@ void from_stream(string &s) {
     s = next_line();
 }
 
-template <typename T> void from_stream(vector<T> &ts) {
-    int len;
-    from_stream(len);
-    ts.clear();
-    for (int i = 0; i < len; ++i) {
-        T t;
-        from_stream(t);
-        ts.push_back(t);
-    }
-}
-
 template <typename T>
 string to_string(T t) {
     stringstream s;
@@ -73,21 +52,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-template <typename T> string to_string(vector<T> ts) {
-    stringstream s;
-    s << "[ ";
-    for (int i = 0; i < ts.size(); ++i) {
-        if (i > 0) s << ", ";
-        s << to_string(ts[i]);
-    }
-    s << " ]";
-    return s.str();
-}
-
-bool do_test(vector<int> capacities, vector<int> bottles, vector<int> fromId, vector<int> toId, vector<int> __expected) {
+bool do_test(string cells, string __expected) {
     time_t startClock = clock();
-    KiwiJuiceEasy *instance = new KiwiJuiceEasy();
-    vector<int> __result = instance->thePouring(capacities, bottles, fromId, toId);
+    RowAndCoins *instance = new RowAndCoins();
+    string __result = instance->getWinner(cells);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -108,16 +76,10 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        vector<int> capacities;
-        from_stream(capacities);
-        vector<int> bottles;
-        from_stream(bottles);
-        vector<int> fromId;
-        from_stream(fromId);
-        vector<int> toId;
-        from_stream(toId);
+        string cells;
+        from_stream(cells);
         next_line();
-        vector<int> __answer;
+        string __answer;
         from_stream(__answer);
 
         cases++;
@@ -125,13 +87,13 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(capacities, bottles, fromId, toId, __answer)) {
+        if ( do_test(cells, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1470590774;
+        int T = time(NULL) - 1531634751;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
         cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
@@ -152,7 +114,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "KiwiJuiceEasy (250 Points)" << endl << endl;
+        cout << "RowAndCoins (250 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

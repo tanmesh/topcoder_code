@@ -32,7 +32,7 @@ class PalindromesCount {
 };
 
 // CUT begin
-ifstream data("PalindromesCount.sample");
+ifstream data("/Users/tanmesh/dev/topcoder_code/Member SRM 474/PalindromesCount.sample");
 
 string next_line() {
     string s;
