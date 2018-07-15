@@ -34,7 +34,7 @@ class KiwiJuiceEasy {
 };
 
 // CUT begin
-ifstream data("KiwiJuiceEasy.sample");
+ifstream data("/Users/tanmesh/dev/topcoder_code/Member SRM 478/KiwiJuiceEasy.sample");
 
 string next_line() {
     string s;

@@ -58,6 +58,7 @@ class EmoticonsDiv2 {
         return emoji(on_screen, on_clipboard, smiles); 
 
     }
+     
 };
 
 // CUT begin
