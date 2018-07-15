@@ -15,9 +15,20 @@ using namespace std;
 class RowAndCoins {
     public:
     string getWinner(string cells) {
+//        int n = (int)cells.length();
+//        if(cells[0] == 'A' || cells[n-1] == 'A') {
+//            return  "Alice";
+//        }
+//        return "Bob";
         int n = (int)cells.length();
-        if(cells[0] == 'A' || cells[n-1] == 'A') {
-            return  "Alice";
+        int cnt[2] = {0 ,0};
+        for(int i=0; i+1<=n; ++i) {
+            if(cells[i] != cells[i+1] || i == n-1) {
+                ++cnt[cells[i]-'A'];
+            }
+        }
+        if(cnt[0] >= cnt[1]) {
+            return "Alice";
         }
         return "Bob";
     }
