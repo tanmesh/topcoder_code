@@ -13,21 +13,24 @@
 using namespace std;
 
 class RowAndCoins {
-    public:
+public:
     string getWinner(string cells) {
+//        old code
 //        int n = (int)cells.length();
 //        if(cells[0] == 'A' || cells[n-1] == 'A') {
 //            return  "Alice";
 //        }
 //        return "Bob";
-        int n = (int)cells.length();
-        int cnt[2] = {0 ,0};
-        for(int i=0; i+1<=n; ++i) {
-            if(cells[i] != cells[i+1] || i == n-1) {
-                ++cnt[cells[i]-'A'];
+
+//        new code
+        int n = (int) cells.length();
+        int cnt[2] = {0, 0};
+        for (int i = 0; i + 1 <= n; ++i) {
+            if (cells[i] != cells[i + 1] || i == n - 1) {
+                ++cnt[cells[i] - 'A'];
             }
         }
-        if(cnt[0] >= cnt[1]) {
+        if (cnt[0] >= cnt[1]) {
             return "Alice";
         }
         return "Bob";
@@ -43,7 +46,8 @@ string next_line() {
     return s;
 }
 
-template <typename T> void from_stream(T &t) {
+template<typename T>
+void from_stream(T &t) {
     stringstream ss(next_line());
     ss >> t;
 }
@@ -52,7 +56,7 @@ void from_stream(string &s) {
     s = next_line();
 }
 
-template <typename T>
+template<typename T>
 string to_string(T t) {
     stringstream s;
     s << t;
@@ -67,14 +71,13 @@ bool do_test(string cells, string __expected) {
     time_t startClock = clock();
     RowAndCoins *instance = new RowAndCoins();
     string __result = instance->getWinner(cells);
-    double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
+    double elapsed = (double) (clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
     if (__result == __expected) {
         cout << "PASSED!" << " (" << elapsed << " seconds)" << endl;
         return true;
-    }
-    else {
+    } else {
         cout << "FAILED!" << " (" << elapsed << " seconds)" << endl;
         cout << "           Expected: " << to_string(__expected) << endl;
         cout << "           Received: " << to_string(__result) << endl;
@@ -98,7 +101,7 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(cells, __answer)) {
+        if (do_test(cells, __answer)) {
             passed++;
         }
     }
@@ -118,7 +121,7 @@ int main(int argc, char *argv[]) {
     set<int> cases;
     bool mainProcess = true;
     for (int i = 1; i < argc; ++i) {
-        if ( string(argv[i]) == "-") {
+        if (string(argv[i]) == "-") {
             mainProcess = false;
         } else {
             cases.insert(atoi(argv[i]));
